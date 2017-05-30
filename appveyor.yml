@@ -36,4 +36,5 @@ artifacts:
    type: zip
 
 cache:
- - depot_tools.zip -> appveyor.yml
+ - depot_tools.zip
+ - C:\src\depot_tools -> appveyor.yml
