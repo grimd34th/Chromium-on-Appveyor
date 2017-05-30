@@ -12,7 +12,7 @@ configuration:
 before_build:
  - ps: $env:Date="$(git show -s --date=short --format='%ad')"
  - ps: $env:APPVEYOR_SAVE_CACHE_ON_ERROR=$TRUE
- - 7z x depot_tools.zip -aos -oC:\src\depot_tools > null
+ - if not exist depot_tools 7z x depot_tools.zip -aos -oC:\src\depot_tools > null
  - mkdir chromium && cd chromium
  - fetch --no-history chromium
  - cd src
@@ -37,5 +37,5 @@ artifacts:
    type: zip
 
 cache:
- - depot_tools.zip
- - C:\src\depot_tools -> appveyor.yml
+ - depot_tools.zip -> appveyor.yml
+ - C:\src\depot_tools
