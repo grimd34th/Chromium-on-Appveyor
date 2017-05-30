@@ -24,6 +24,7 @@ build_script:
 install:
  - if not exist depot_tools.zip appveyor DownloadFile https://storage.googleapis.com/chrome-infra/depot_tools.zip -FileName depot_tools.zip
  - set PATH=C:\Program Files (x86)\MSBuild\14.0\Bin;C:\src\depot_tools;%PATH%
+ - set DEPOT_TOOLS_WIN_TOOLCHAIN=0
  - set COMMIT_SHA=%APPVEYOR_REPO_COMMIT:~0,8%
 
 artifacts:
