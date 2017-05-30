@@ -13,7 +13,7 @@ before_build:
  - ps: $env:Date="$(git show -s --date=short --format='%ad')"
  - 7z x depot_tools.zip -aos -oC:\src\depot_tools > null
  - mkdir chromium && cd chromium
- - fetch chromium
+ - fetch --no-history chromium
  - cd src
 
 build_script:
