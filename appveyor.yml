@@ -20,7 +20,6 @@ build_script:
  - cd C:\src\chromium\src
  - gn gen out/Default
  - ninja -C out\Default chrome
- - cmake --build . --config Release -- /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 
 install:
  - if not exist depot_tools.zip appveyor DownloadFile https://storage.googleapis.com/chrome-infra/depot_tools.zip -FileName depot_tools.zip
