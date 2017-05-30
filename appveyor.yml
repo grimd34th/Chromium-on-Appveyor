@@ -11,6 +11,7 @@ configuration:
  
 before_build:
  - ps: $env:Date="$(git show -s --date=short --format='%ad')"
+ - ps: $env:APPVEYOR_SAVE_CACHE_ON_ERROR=$TRUE
  - 7z x depot_tools.zip -aos -oC:\src\depot_tools > null
  - mkdir chromium && cd chromium
  - fetch --no-history chromium
@@ -18,8 +19,10 @@ before_build:
 
 build_script:
  - cd C:\src\chromium\src
- - gn gen out/Default
- - ninja -C out\Default chrome
+ - gn gen --ide=vs --filters=//chrome out\Default
+ - msbuild "C:\src\chromium\src\out\Default\all.sln" /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+# - gn gen out/Default
+# - ninja -C out\Default chrome
 
 install:
  - if not exist depot_tools.zip appveyor DownloadFile https://storage.googleapis.com/chrome-infra/depot_tools.zip -FileName depot_tools.zip
