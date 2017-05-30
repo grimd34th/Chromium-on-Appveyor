@@ -1,0 +1,36 @@
+version: '0.0.1-{build}'
+
+os: Visual Studio 2015
+platform: x64
+clone_folder: C:\src
+clone_depth: 1
+test: off
+
+configuration:
+ - Release
+ 
+before_build:
+ - ps: $env:Date="$(git show -s --date=short --format='%ad')"
+ - 7z x depot_tools.zip -aos -oC:\src\depot_tools > null
+ - mkdir chromium && cd chromium
+ - fetch chromium
+ - cd src
+
+build_script:
+ - cd C:\src\chromium\src
+ - gn gen out/Default
+ - ninja -C out\Default chrome
+ - cmake --build . --config Release -- /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+
+install:
+ - if not exist depot_tools.zip appveyor DownloadFile https://storage.googleapis.com/chrome-infra/depot_tools.zip -FileName depot_tools.zip
+ - set PATH=C:\Program Files (x86)\MSBuild\14.0\Bin;C:\src\depot_tools;%PATH%
+ - set COMMIT_SHA=%APPVEYOR_REPO_COMMIT:~0,8%
+
+artifacts:
+ - path: chromium\src\out\Default\
+   name: 'chromium-v0.0.1-$(Date)-$(COMMIT_SHA)_win64'
+   type: zip
+
+cache:
+ - depot_tools.zip -> appveyor.yml
